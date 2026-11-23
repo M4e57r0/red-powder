@@ -1,5 +1,12 @@
 {
   "REDPOWDER": {
+    "Panel": {
+      "Title": "Панель истощения",
+      "Placeholder": "Содержимое панели появится на следующих этапах."
+    },
+    "Controls": {
+      "OpenPanel": "Панель истощения"
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Максимум истощения",

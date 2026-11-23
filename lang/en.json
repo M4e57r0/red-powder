@@ -1,5 +1,12 @@
 {
   "REDPOWDER": {
+    "Panel": {
+      "Title": "Exhaustion Panel",
+      "Placeholder": "The panel content will be added in later stages."
+    },
+    "Controls": {
+      "OpenPanel": "Exhaustion Panel"
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Maximum Exhaustion",

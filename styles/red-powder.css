@@ -3,3 +3,7 @@
  * Все правила должны иметь префикс `.red-powder`.
  * Наполнение добавляется на последующих этапах.
  */
+
+.red-powder-panel .red-powder-panel-body {
+  padding: 0.5rem;
+}
