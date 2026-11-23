@@ -16,6 +16,15 @@
     "Controls": {
       "OpenPanel": "Exhaustion Panel"
     },
+    "Exhaustion": {
+      "Message": "{name}: exhaustion {from} → {to} ({reason})",
+      "MaxReached": "Cannot raise exhaustion above {max} for \"{name}\".",
+      "Reason": {
+        "Timer": "timer",
+        "Manual": "manual",
+        "Cigarette": "cigarette"
+      }
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Maximum Exhaustion",

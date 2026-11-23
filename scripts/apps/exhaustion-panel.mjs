@@ -3,6 +3,7 @@
  * @module red-powder/apps/exhaustion-panel
  */
 
+import { applyExhaustion, EXHAUSTION_REASONS } from "../exhaustion.mjs";
 import { FLAGS, MODULE_ID, SETTINGS, TEMPLATES } from "../constants.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -60,7 +61,6 @@ export async function removePanelActor(uuid) {
 
 /**
  * Меняет уровень истощения актёра на указанную величину.
- * TODO (этап 4): заменить на applyExhaustion из exhaustion.mjs (ограничения, чат).
  * @param {string} uuid  UUID актёра.
  * @param {number} delta  Изменение уровня (например, +1 или -1).
  * @returns {Promise<void>}
@@ -68,9 +68,7 @@ export async function removePanelActor(uuid) {
 async function changePanelActorExhaustion(uuid, delta) {
   const actor = await fromUuid(uuid);
   if ( !actor ) return;
-  const current = actor.system.attributes?.exhaustion ?? 0;
-  const next = Math.max(0, current + delta);
-  await actor.update({ "system.attributes.exhaustion": next });
+  await applyExhaustion(actor, delta, { reason: EXHAUSTION_REASONS.MANUAL });
   renderPanel();
 }
 

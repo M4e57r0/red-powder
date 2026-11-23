@@ -16,6 +16,15 @@
     "Controls": {
       "OpenPanel": "Панель истощения"
     },
+    "Exhaustion": {
+      "Message": "{name}: истощение {from} → {to} ({reason})",
+      "MaxReached": "Невозможно поднять истощение выше {max} у «{name}».",
+      "Reason": {
+        "Timer": "таймер",
+        "Manual": "вручную",
+        "Cigarette": "сигарета"
+      }
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Максимум истощения",
