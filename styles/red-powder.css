@@ -98,3 +98,47 @@
   color: var(--color-text-dark-5, #777);
   text-align: center;
 }
+
+/* --- Таймер --- */
+
+.red-powder-timer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border-light-2, #888);
+  border-radius: 4px;
+}
+
+.red-powder-timer-display {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.red-powder-timer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.red-powder-timer-controls input[type="number"] {
+  width: 4rem;
+}
+
+.red-powder-timer-repeat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.red-powder-timer-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.red-powder-timer-apply {
+  flex: 1;
+}

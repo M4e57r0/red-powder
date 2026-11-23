@@ -25,6 +25,19 @@
         "Cigarette": "cigarette"
       }
     },
+    "Timer": {
+      "Interval": "Interval",
+      "UnitMinutes": "minutes",
+      "UnitHours": "hours",
+      "ModeReal": "Real time",
+      "ModeGame": "Game time",
+      "Repeat": "Repeat",
+      "Start": "Start",
+      "Pause": "Pause",
+      "Reset": "Reset",
+      "ApplyNow": "Apply now",
+      "Missed": "Timer: a trigger was missed on load"
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Maximum Exhaustion",

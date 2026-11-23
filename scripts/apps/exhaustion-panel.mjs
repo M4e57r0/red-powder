@@ -4,12 +4,10 @@
  */
 
 import { applyExhaustion, EXHAUSTION_REASONS } from "../exhaustion.mjs";
-import { FLAGS, MODULE_ID, SETTINGS, TEMPLATES } from "../constants.mjs";
+import { FLAGS, MODULE_ID, PANEL_ID, SETTINGS, TEMPLATES } from "../constants.mjs";
+import { applyExhaustionToAll, formatTime, getTimerRemaining, getTimerState, pauseTimer, resetTimer, startTimer, updateTimerConfig } from "../timer.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-
-/** Идентификатор окна панели. */
-export const PANEL_ID = "red-powder-exhaustion-panel";
 
 /* -------------------------------------------- */
 /*  Состояние панели (world-настройка)          */
@@ -120,7 +118,11 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
     actions: {
       decrease: ExhaustionPanel.#onDecrease,
       increase: ExhaustionPanel.#onIncrease,
-      remove: ExhaustionPanel.#onRemove
+      remove: ExhaustionPanel.#onRemove,
+      timerStart: ExhaustionPanel.#onTimerStart,
+      timerPause: ExhaustionPanel.#onTimerPause,
+      timerReset: ExhaustionPanel.#onTimerReset,
+      applyNow: ExhaustionPanel.#onApplyNow
     }
   };
 
@@ -166,7 +168,7 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
         cigarettes: countCigarettes(actor)
       };
     });
-    return { actors };
+    return { actors, timer: getTimerState(), timerDisplay: formatTime(getTimerRemaining()) };
   }
 
   /* -------------------------------------------- */
@@ -175,9 +177,13 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
   _onRender(context, options) {
     super._onRender(context, options);
     const zone = this.element.querySelector("[data-drop-zone]");
-    if ( !zone ) return;
-    zone.addEventListener("dragover", event => event.preventDefault());
-    zone.addEventListener("drop", event => this.#onDrop(event));
+    if ( zone ) {
+      zone.addEventListener("dragover", event => event.preventDefault());
+      zone.addEventListener("drop", event => this.#onDrop(event));
+    }
+    for ( const name of ["interval", "unit", "mode", "repeat"] ) {
+      this.element.querySelector(`[name="${name}"]`)?.addEventListener("change", event => this.#onTimerConfigChange(event));
+    }
   }
 
   /* -------------------------------------------- */
@@ -226,6 +232,21 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
   /* -------------------------------------------- */
 
   /**
+   * Обрабатывает изменение полей конфигурации таймера.
+   * @param {Event} event  Событие change.
+   * @returns {void}
+   */
+  #onTimerConfigChange(event) {
+    const name = event.target.name;
+    if ( name === "interval" ) updateTimerConfig({ interval: Math.max(1, Number(event.target.value) || 1) });
+    else if ( name === "unit" ) updateTimerConfig({ unit: event.target.value });
+    else if ( name === "mode" ) updateTimerConfig({ mode: event.target.value });
+    else if ( name === "repeat" ) updateTimerConfig({ repeat: event.target.checked });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
    * Уменьшает истощение актёра на 1.
    * @this {ExhaustionPanel}
    * @param {PointerEvent} event  Событие клика.
@@ -259,6 +280,43 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
   static async #onRemove(event, target) {
     const uuid = target.closest("[data-uuid]")?.dataset.uuid;
     if ( uuid ) await removePanelActor(uuid);
+  }
+
+  /**
+   * Запускает таймер.
+   * @returns {void}
+   */
+  static #onTimerStart() {
+    startTimer();
+    renderPanel();
+  }
+
+  /**
+   * Ставит таймер на паузу.
+   * @returns {void}
+   */
+  static #onTimerPause() {
+    pauseTimer();
+    renderPanel();
+  }
+
+  /**
+   * Сбрасывает таймер.
+   * @returns {void}
+   */
+  static #onTimerReset() {
+    resetTimer();
+    renderPanel();
+  }
+
+  /**
+   * Накладывает истощение всем персонажам из списка.
+   * @returns {Promise<void>}
+   */
+  static async #onApplyNow() {
+    const step = game.settings.get(MODULE_ID, SETTINGS.STEP);
+    await applyExhaustionToAll(EXHAUSTION_REASONS.MANUAL, step);
+    renderPanel();
   }
 }
 

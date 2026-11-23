@@ -25,6 +25,19 @@
         "Cigarette": "сигарета"
       }
     },
+    "Timer": {
+      "Interval": "Интервал",
+      "UnitMinutes": "минуты",
+      "UnitHours": "часы",
+      "ModeReal": "Реальное время",
+      "ModeGame": "Игровое время",
+      "Repeat": "Повторять",
+      "Start": "Старт",
+      "Pause": "Пауза",
+      "Reset": "Сброс",
+      "ApplyNow": "Наложить сейчас",
+      "Missed": "Таймер: при загрузке пропущено срабатывание"
+    },
     "Settings": {
       "MaxExhaustion": {
         "Name": "Максимум истощения",

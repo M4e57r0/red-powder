@@ -6,6 +6,9 @@
 /** Идентификатор модуля. */
 export const MODULE_ID = "red-powder";
 
+/** Идентификатор окна панели. */
+export const PANEL_ID = "red-powder-exhaustion-panel";
+
 /** Ключи настроек модуля (`game.settings`). */
 export const SETTINGS = {
   /** Список UUID актёров на панели мастера (world). */

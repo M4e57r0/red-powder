@@ -1,5 +1,44 @@
 <div class="red-powder-panel-body">
 
+    {{!-- Таймер --}}
+    <section class="red-powder-timer">
+        <div class="red-powder-timer-display" data-timer-display>{{ timerDisplay }}</div>
+        <div class="red-powder-timer-controls">
+            <input type="number" name="interval" value="{{ timer.interval }}" min="1"
+                   data-tooltip="REDPOWDER.Timer.Interval">
+            <select name="unit">
+                <option value="minutes" {{#if (eq timer.unit "minutes")}}selected{{/if}}>{{localize "REDPOWDER.Timer.UnitMinutes"}}</option>
+                <option value="hours" {{#if (eq timer.unit "hours")}}selected{{/if}}>{{localize "REDPOWDER.Timer.UnitHours"}}</option>
+            </select>
+            <select name="mode">
+                <option value="real" {{#if (eq timer.mode "real")}}selected{{/if}}>{{localize "REDPOWDER.Timer.ModeReal"}}</option>
+                <option value="game" {{#if (eq timer.mode "game")}}selected{{/if}}>{{localize "REDPOWDER.Timer.ModeGame"}}</option>
+            </select>
+            <label class="red-powder-timer-repeat">
+                <input type="checkbox" name="repeat" {{checked timer.repeat}}>
+                {{localize "REDPOWDER.Timer.Repeat"}}
+            </label>
+        </div>
+        <div class="red-powder-timer-buttons">
+            <button type="button" data-action="timerStart" data-tooltip="REDPOWDER.Timer.Start"
+                    aria-label="{{ localize 'REDPOWDER.Timer.Start' }}">
+                <i class="fa-solid fa-play" inert></i>
+            </button>
+            <button type="button" data-action="timerPause" data-tooltip="REDPOWDER.Timer.Pause"
+                    aria-label="{{ localize 'REDPOWDER.Timer.Pause' }}">
+                <i class="fa-solid fa-pause" inert></i>
+            </button>
+            <button type="button" data-action="timerReset" data-tooltip="REDPOWDER.Timer.Reset"
+                    aria-label="{{ localize 'REDPOWDER.Timer.Reset' }}">
+                <i class="fa-solid fa-rotate-left" inert></i>
+            </button>
+            <button type="button" data-action="applyNow" class="red-powder-timer-apply"
+                    data-tooltip="REDPOWDER.Timer.ApplyNow" aria-label="{{ localize 'REDPOWDER.Timer.ApplyNow' }}">
+                {{localize "REDPOWDER.Timer.ApplyNow"}}
+            </button>
+        </div>
+    </section>
+
     {{!-- Зона перетаскивания --}}
     <div class="red-powder-drop-zone" data-drop-zone>
         <i class="fa-solid fa-user-plus" inert></i>
