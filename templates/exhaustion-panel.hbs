@@ -1,3 +1,48 @@
 <div class="red-powder-panel-body">
-    <p class="red-powder-placeholder">{{localize "REDPOWDER.Panel.Placeholder"}}</p>
+
+    {{!-- Зона перетаскивания --}}
+    <div class="red-powder-drop-zone" data-drop-zone>
+        <i class="fa-solid fa-user-plus" inert></i>
+        <p>{{localize "REDPOWDER.Panel.DropHint"}}</p>
+    </div>
+
+    {{!-- Список персонажей --}}
+    <ul class="red-powder-actor-list">
+        {{#each actors}}
+        <li class="red-powder-actor {{#if missing}}missing{{/if}}" data-uuid="{{ uuid }}">
+            {{#if missing}}
+            <span class="red-powder-actor-name">{{localize "REDPOWDER.Panel.MissingActor"}}</span>
+            <span class="red-powder-actor-uuid">{{ uuid }}</span>
+            {{else}}
+            <img class="red-powder-actor-portrait" src="{{ img }}" alt="{{ name }}">
+            <span class="red-powder-actor-name">{{ name }}</span>
+            <span class="red-powder-actor-exhaustion" data-tooltip="REDPOWDER.Panel.Exhaustion">
+                <i class="fa-solid fa-hourglass-half" inert></i>
+                <span>{{ exhaustion }}</span>
+            </span>
+            <span class="red-powder-actor-cigarettes" data-tooltip="REDPOWDER.Panel.Cigarettes">
+                <i class="fa-solid fa-smoking" inert></i>
+                <span>{{ cigarettes }}</span>
+            </span>
+            {{/if}}
+            <div class="red-powder-actor-controls">
+                <button type="button" data-action="decrease" data-tooltip="REDPOWDER.Panel.Decrease"
+                        aria-label="{{ localize 'REDPOWDER.Panel.Decrease' }}" {{ disabled missing }}>
+                    <i class="fa-solid fa-minus" inert></i>
+                </button>
+                <button type="button" data-action="increase" data-tooltip="REDPOWDER.Panel.Increase"
+                        aria-label="{{ localize 'REDPOWDER.Panel.Increase' }}" {{ disabled missing }}>
+                    <i class="fa-solid fa-plus" inert></i>
+                </button>
+                <button type="button" data-action="remove" data-tooltip="REDPOWDER.Panel.Remove"
+                        aria-label="{{ localize 'REDPOWDER.Panel.Remove' }}">
+                    <i class="fa-solid fa-trash" inert></i>
+                </button>
+            </div>
+        </li>
+        {{else}}
+        <li class="red-powder-empty">{{localize "REDPOWDER.Panel.Empty"}}</li>
+        {{/each}}
+    </ul>
+
 </div>

@@ -2,7 +2,16 @@
   "REDPOWDER": {
     "Panel": {
       "Title": "Exhaustion Panel",
-      "Placeholder": "The panel content will be added in later stages."
+      "DropHint": "Drag characters here from the Actors panel",
+      "Empty": "The list is empty. Drag a character here.",
+      "OnlyCharacters": "Only character actors are accepted.",
+      "AlreadyAdded": "This character is already in the list.",
+      "MissingActor": "Actor unavailable",
+      "Exhaustion": "Exhaustion",
+      "Cigarettes": "\"Red Powder\" cigarettes",
+      "Decrease": "Decrease exhaustion by 1",
+      "Increase": "Increase exhaustion by 1",
+      "Remove": "Remove from list"
     },
     "Controls": {
       "OpenPanel": "Exhaustion Panel"

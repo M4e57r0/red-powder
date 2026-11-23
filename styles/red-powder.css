@@ -1,9 +1,100 @@
 /*
  * Стили модуля «Красный порох».
  * Все правила должны иметь префикс `.red-powder`.
- * Наполнение добавляется на последующих этапах.
  */
 
 .red-powder-panel .red-powder-panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
   padding: 0.5rem;
+}
+
+.red-powder-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 2px dashed var(--color-border-light-2, #888);
+  border-radius: 4px;
+  color: var(--color-text-dark-5, #777);
+  text-align: center;
+}
+
+.red-powder-drop-zone i {
+  font-size: 1.5rem;
+}
+
+.red-powder-actor-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.red-powder-actor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--color-border-light-2, #888);
+  border-radius: 4px;
+}
+
+.red-powder-actor.missing {
+  opacity: 0.6;
+}
+
+.red-powder-actor-portrait {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.red-powder-actor-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.red-powder-actor-uuid {
+  color: var(--color-text-dark-5, #777);
+  font-size: 0.8em;
+}
+
+.red-powder-actor-exhaustion,
+.red-powder-actor-cigarettes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.red-powder-actor-controls {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.red-powder-actor-controls button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  line-height: 1;
+}
+
+.red-powder-empty {
+  padding: 0.5rem;
+  color: var(--color-text-dark-5, #777);
+  text-align: center;
 }

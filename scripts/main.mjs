@@ -3,12 +3,13 @@
  * @module red-powder/main
  */
 
-import { toggleExhaustionPanel } from "./apps/exhaustion-panel.mjs";
+import { registerExhaustionPanelHooks, toggleExhaustionPanel } from "./apps/exhaustion-panel.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import { registerSettings } from "./settings.mjs";
 
 Hooks.once("init", () => {
   registerSettings();
+  registerExhaustionPanelHooks();
   console.log(`[${MODULE_ID}] Модуль «Красный порох» инициализирован`);
 });
 
