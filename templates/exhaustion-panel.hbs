@@ -21,11 +21,11 @@
         </div>
         <div class="red-powder-timer-buttons">
             <button type="button" data-action="timerStart" data-tooltip="REDPOWDER.Timer.Start"
-                    aria-label="{{ localize 'REDPOWDER.Timer.Start' }}">
+                    aria-label="{{ localize 'REDPOWDER.Timer.Start' }}" {{ disabled timerRunning }}>
                 <i class="fa-solid fa-play" inert></i>
             </button>
             <button type="button" data-action="timerPause" data-tooltip="REDPOWDER.Timer.Pause"
-                    aria-label="{{ localize 'REDPOWDER.Timer.Pause' }}">
+                    aria-label="{{ localize 'REDPOWDER.Timer.Pause' }}" {{ disabled timerPaused }}>
                 <i class="fa-solid fa-pause" inert></i>
             </button>
             <button type="button" data-action="timerReset" data-tooltip="REDPOWDER.Timer.Reset"

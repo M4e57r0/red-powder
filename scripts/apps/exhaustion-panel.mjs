@@ -168,7 +168,13 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
         cigarettes: countCigarettes(actor)
       };
     });
-    return { actors, timer: getTimerState(), timerDisplay: formatTime(getTimerRemaining()) };
+    return {
+      actors,
+      timer: getTimerState(),
+      timerDisplay: formatTime(getTimerRemaining()),
+      timerRunning: getTimerState().running === true,
+      timerPaused: getTimerState().running !== true
+    };
   }
 
   /* -------------------------------------------- */
@@ -284,28 +290,28 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
 
   /**
    * Запускает таймер.
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static #onTimerStart() {
-    startTimer();
+  static async #onTimerStart() {
+    await startTimer();
     renderPanel();
   }
 
   /**
    * Ставит таймер на паузу.
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static #onTimerPause() {
-    pauseTimer();
+  static async #onTimerPause() {
+    await pauseTimer();
     renderPanel();
   }
 
   /**
    * Сбрасывает таймер.
-   * @returns {void}
+   * @returns {Promise<void>}
    */
-  static #onTimerReset() {
-    resetTimer();
+  static async #onTimerReset() {
+    await resetTimer();
     renderPanel();
   }
 

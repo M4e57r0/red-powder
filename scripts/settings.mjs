@@ -31,7 +31,7 @@ export function registerSettings() {
       repeat: true,
       endsAt: null,
       running: false,
-      paused: false
+      pausedRemaining: null
     }
   });
 

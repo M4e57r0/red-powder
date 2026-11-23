@@ -3,11 +3,14 @@
  * @module red-powder/timer
  */
 
-import { MODULE_ID, PANEL_ID, SETTINGS, TIMER_MODES } from "./constants.mjs";
+import { MODULE_ID, PANEL_ID, SETTINGS, TIMER_MODES, TIMER_UNITS } from "./constants.mjs";
 import { applyExhaustion, EXHAUSTION_REASONS } from "./exhaustion.mjs";
 
 /** Идентификатор интервала отсчёта (реальное время). */
 let realIntervalId = null;
+
+/** Защита от повторного срабатывания, пока предыдущее ещё выполняется. */
+let triggering = false;
 
 /**
  * Возвращает состояние таймера.
@@ -35,12 +38,12 @@ function now() {
 }
 
 /**
- * Интервал в единицах режима таймера.
+ * Длительность интервала в единицах режима таймера.
+ * @param {object} [state]  Состояние таймера (по умолчанию — текущее).
  * @returns {number}
  */
-function durationInModeUnit() {
-  const state = getTimerState();
-  const minutes = state.unit === "hours" ? state.interval * 60 : state.interval;
+function durationInModeUnit(state = getTimerState()) {
+  const minutes = state.unit === TIMER_UNITS.HOURS ? state.interval * 60 : state.interval;
   return state.mode === TIMER_MODES.GAME ? minutes * 60 : minutes * 60 * 1000;
 }
 
@@ -50,9 +53,9 @@ function durationInModeUnit() {
  */
 export function getTimerRemaining() {
   const state = getTimerState();
-  if ( state.running ) return state.endsAt - now();
+  if ( state.running ) return Math.max(0, state.endsAt - now());
   if ( state.pausedRemaining != null ) return state.pausedRemaining;
-  return durationInModeUnit();
+  return durationInModeUnit(state);
 }
 
 /**
@@ -76,7 +79,7 @@ export function formatTime(remaining) {
 export async function startTimer() {
   const state = getTimerState();
   if ( state.running ) return;
-  state.endsAt = now() + (state.pausedRemaining ?? durationInModeUnit());
+  state.endsAt = now() + (state.pausedRemaining ?? durationInModeUnit(state));
   state.pausedRemaining = null;
   state.running = true;
   await setTimerState(state);
@@ -118,10 +121,15 @@ export async function resetTimer() {
 export async function updateTimerConfig(partial) {
   const state = getTimerState();
   Object.assign(state, partial);
-  const restart = state.running && ("interval" in partial || "unit" in partial || "mode" in partial);
-  if ( restart ) state.endsAt = now() + durationInModeUnit();
+  const timingChanged = ("interval" in partial) || ("unit" in partial) || ("mode" in partial);
+  if ( timingChanged ) {
+    // Пересчитываем отсчёт под новую длительность, сохраняя статус (идёт/пауза).
+    if ( state.running ) state.endsAt = now() + durationInModeUnit(state);
+    else if ( state.pausedRemaining != null ) state.pausedRemaining = durationInModeUnit(state);
+  }
   await setTimerState(state);
   startCountdown();
+  updateTimerDisplay();
 }
 
 /**
@@ -141,20 +149,29 @@ export async function applyExhaustionToAll(reason, delta) {
 
 /**
  * Срабатывание таймера: применяет истощение и перезапускает (или останавливает).
+ * Защищено от повторного входа, пока предыдущее срабатывание не завершилось.
  * @returns {Promise<void>}
  */
 async function triggerTimer() {
-  const state = getTimerState();
-  await applyExhaustionToAll(EXHAUSTION_REASONS.TIMER, 1);
-  if ( state.repeat ) {
-    state.endsAt = now() + durationInModeUnit();
-    state.running = true;
-  } else {
-    state.endsAt = null;
-    state.running = false;
+  if ( triggering ) return;
+  triggering = true;
+  try {
+    const state = getTimerState();
+    await applyExhaustionToAll(EXHAUSTION_REASONS.TIMER, 1);
+    if ( state.repeat ) {
+      state.endsAt = now() + durationInModeUnit(state);
+      state.pausedRemaining = null;
+      state.running = true;
+    } else {
+      state.endsAt = null;
+      state.pausedRemaining = null;
+      state.running = false;
+    }
+    await setTimerState(state);
+    startCountdown();
+  } finally {
+    triggering = false;
   }
-  await setTimerState(state);
-  startCountdown();
 }
 
 /* -------------------------------------------- */
@@ -203,7 +220,7 @@ function tick() {
 function updateTimerDisplay() {
   const panel = foundry.applications.instances.get(PANEL_ID);
   if ( !panel ) return;
-  const el = panel.element.querySelector("[data-timer-display]");
+  const el = panel.element?.querySelector("[data-timer-display]");
   if ( el ) el.textContent = formatTime(getTimerRemaining());
 }
 
@@ -211,13 +228,21 @@ function updateTimerDisplay() {
 
 /**
  * Проверяет пропущенное срабатывание при загрузке.
+ * Если срок уже истёк, применяет ровно одно срабатывание и перезапускает таймер.
  * @returns {Promise<void>}
  */
 async function checkMissedTrigger() {
   const state = getTimerState();
   if ( !state.running ) return;
   if ( state.endsAt - now() <= 0 ) {
+    // Гарантируем ровно одно срабатывание независимо от настройки «Повторять».
+    const repeat = state.repeat;
+    state.repeat = true;
+    await setTimerState(state);
     await triggerTimer();
+    const after = getTimerState();
+    after.repeat = repeat;
+    await setTimerState(after);
     ui.notifications.info(game.i18n.localize("REDPOWDER.Timer.Missed"));
   }
 }
@@ -228,12 +253,13 @@ async function checkMissedTrigger() {
  */
 export function registerTimerHooks() {
   Hooks.on("updateWorldTime", () => {
+    if ( !game.user.isGM ) return;
     const state = getTimerState();
     if ( state.running && state.mode === TIMER_MODES.GAME ) tick();
   });
-  Hooks.once("ready", () => {
+  Hooks.once("ready", async () => {
     if ( !game.user.isGM ) return;
-    checkMissedTrigger();
+    await checkMissedTrigger();
     startCountdown();
   });
 }
