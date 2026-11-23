@@ -1,0 +1,39 @@
+{
+  "REDPOWDER": {
+    "Settings": {
+      "MaxExhaustion": {
+        "Name": "Maximum Exhaustion",
+        "Hint": "The maximum exhaustion level the panel can apply (1–6)."
+      },
+      "AllowSixthLevel": {
+        "Name": "Allow deadly (6th) level",
+        "Hint": "When disabled, the panel will not raise exhaustion above the maximum and warns the GM."
+      },
+      "Step": {
+        "Name": "Manual step",
+        "Hint": "How many levels the \"Apply exhaustion now\" button adds."
+      },
+      "ChatMode": {
+        "Name": "Chat messages",
+        "Hint": "Where to post exhaustion change messages.",
+        "Public": "Public",
+        "GM": "GM only",
+        "Off": "Disabled"
+      },
+      "CigaretteName": {
+        "Name": "Cigarette item name",
+        "Hint": "An item with this name (case-insensitive) counts as a \"Red Powder\" cigarette."
+      },
+      "DeleteEmptyStack": {
+        "Name": "Delete empty stack",
+        "Hint": "Delete the cigarette item when its quantity drops to zero."
+      },
+      "SkillSortMode": {
+        "Name": "Skill sorting",
+        "Hint": "The order of skills on the character sheet.",
+        "Standard": "Standard",
+        "Ability": "By ability"
+      }
+    }
+  }
+}
