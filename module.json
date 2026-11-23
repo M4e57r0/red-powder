@@ -1,0 +1,23 @@
+{
+  "id": "red-powder",
+  "title": "Красный порох",
+  "description": "Панель истощения для мастера, сигареты «Красный порох» и сортировка навыков для dnd5e.",
+  "version": "0.1.0",
+  "authors": [{ "name": "M4e57r0" }],
+  "compatibility": { "minimum": "13", "verified": "13.351" },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": { "minimum": "5.2.0", "verified": "5.2.5" }
+      }
+    ]
+  },
+  "esmodules": ["scripts/main.mjs"],
+  "styles": ["styles/red-powder.css"],
+  "languages": [
+    { "lang": "ru", "name": "Русский", "path": "lang/ru.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ]
+}

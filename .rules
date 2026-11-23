@@ -1,0 +1,48 @@
+# Проект: Foundry VTT модуль "Красный порох" (id: red-powder)
+
+## Среда (строго)
+- Foundry VTT **v13.351**, система **dnd5e 5.2.5**. Код только под эти версии.
+- Чистый ES-модуль (.mjs), без сборщиков, без npm-зависимостей, без TypeScript.
+- Интерфейс: **ApplicationV2 + HandlebarsApplicationMixin**
+  (foundry.applications.api). Запрещён устаревший класс Application (V1),
+  jQuery-стиль и API версий v10-v12.
+- Кнопка в UI мастера: хук getSceneControlButtons в формате v13
+  (controls — объект, tools — объекты, а не массивы).
+- Шаблоны: foundry.applications.handlebars.loadTemplates / renderTemplate.
+- Перетаскивание: foundry.applications.ux.TextEditor.implementation.getDragEventData
+  + fromUuid.
+
+## Исходники для справки (только чтение, не изменять)
+- Ядро Foundry v13.351: корневая папка `client`
+  (например client/applications/api).
+- Система dnd5e 5.2.5: `_reference/dnd5e`
+  (module/, templates/, en.json). Если module/ отсутствует, логика системы
+  находится только в dnd5e.mjs.
+- Файл dnd5e.mjs (~2.8 МБ) НИКОГДА не читай целиком: ищи по ключевым словам
+  (например "exhaustion", "skills-list") и читай небольшие фрагменты вокруг
+  найденного. Остальные файлы больше ~50 КБ тоже не читай целиком.
+
+## Обязательные правила
+1. Перед использованием любого API Foundry или dnd5e **найди его в исходниках**
+   (папки client/ Foundry и systems/dnd5e в рабочем пространстве). Если не нашёл,
+   скажи об этом, а не выдумывай.
+2. Не угадывай CSS-селекторы и структуру листа dnd5e: открой шаблоны
+   systems/dnd5e/templates и модули в module/applications/actor/ и опиши,
+   что нашёл, прежде чем писать код.
+3. Все строки интерфейса только через game.i18n (lang/ru.json и lang/en.json).
+4. Все ID, ключи настроек и флаги берутся из scripts/constants.mjs.
+   MODULE_ID = "red-powder". Флаги документов: flags["red-powder"].
+5. Любая запись в Actor/Item оборачивается в try/catch; ошибки через
+   ui.notifications.error + console.error с префиксом [red-powder].
+6. Изменять документы можно только тем клиентом, у кого есть права.
+   Не использовать сокеты без крайней необходимости. Если нужны, объясни зачем.
+7. Не меняй файлы вне RedPowderModule и не трогай код ядра/системы.
+8. Делай только то, что просит текущий этап из docs/TASKS.md. Не добавляй
+   фич, которых нет в docs/SPEC.md.
+9. Код короткий и читаемый, JSDoc на публичные функции, один модуль = одна
+   ответственность.
+10. После работы кратко: что изменено, как проверить вручную в Foundry,
+    какие допущения сделал.
+
+## Язык
+Общайся и пиши комментарии на русском. Идентификаторы в коде на английском.
