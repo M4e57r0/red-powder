@@ -3,6 +3,13 @@
  * Все правила должны иметь префикс `.red-powder`.
  */
 
+/* ============================================================
+ * ПАНЕЛЬ МАСТЕРА (exhaustion-panel.hbs)
+ * ============================================================ */
+
+/* Корневой контейнер окна панели.
+ * Устанавливается через classes: ["red-powder", "red-powder-panel"]
+ * в DEFAULT_OPTIONS (scripts/apps/exhaustion-panel.mjs). */
 .red-powder-panel .red-powder-panel-body {
   display: flex;
   flex-direction: column;
@@ -11,6 +18,60 @@
   padding: 0.5rem;
 }
 
+/* --- Таймер (templates/exhaustion-panel.hbs, <section class="red-powder-timer">) --- */
+
+/* Обёртка блока таймера: отсчёт + настройки + кнопки. */
+.red-powder-timer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border-light-2, #888);
+  border-radius: 4px;
+}
+
+/* Цифры обратного отсчёта (ЧЧ:ММ:СС). Обновляется JS-ом каждую секунду. */
+.red-powder-timer-display {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Строка настроек: input интервала, select единицы, select режима, чекбокс «Повторять». */
+.red-powder-timer-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Числовое поле интервала (минуты/часы). */
+.red-powder-timer-controls input[type="number"] {
+  width: 4rem;
+}
+
+/* Чекбокс «Повторять» + подпись. */
+.red-powder-timer-repeat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Ряд кнопок: Старт / Пауза / Сброс / «Наложить сейчас». */
+.red-powder-timer-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Кнопка «Наложить сейчас» — растягивается на остаток ширины ряда. */
+.red-powder-timer-apply {
+  flex: 1;
+}
+
+/* --- Зона перетаскивания (templates/exhaustion-panel.hbs, [data-drop-zone]) --- */
+
+/* Пунктирная зона, куда мастер перетаскивает актёров из боковой панели. */
 .red-powder-drop-zone {
   display: flex;
   flex-direction: column;
@@ -28,6 +89,9 @@
   font-size: 1.5rem;
 }
 
+/* --- Список персонажей (templates/exhaustion-panel.hbs, <ul class="red-powder-actor-list">) --- */
+
+/* Скроллируемый список строк персонажей. */
 .red-powder-actor-list {
   flex: 1;
   min-height: 0;
@@ -40,6 +104,7 @@
   overflow-y: auto;
 }
 
+/* Одна строка персонажа: портрет, имя, истощение, сигареты, кнопки. */
 .red-powder-actor {
   display: flex;
   align-items: center;
@@ -49,10 +114,12 @@
   border-radius: 4px;
 }
 
+/* Модификатор: актёр удалён из мира — строка полупрозрачная. */
 .red-powder-actor.missing {
   opacity: 0.6;
 }
 
+/* Портрет актёра (32×32). */
 .red-powder-actor-portrait {
   width: 32px;
   height: 32px;
@@ -61,6 +128,7 @@
   object-fit: cover;
 }
 
+/* Имя актёра — занимает свободное место, обрезается многоточием. */
 .red-powder-actor-name {
   flex: 1;
   overflow: hidden;
@@ -68,12 +136,15 @@
   white-space: nowrap;
 }
 
+/* UUID — показывается вместо имени, когда актёр удалён. */
 .red-powder-actor-uuid {
   color: var(--color-text-dark-5, #777);
   font-size: 0.8em;
 }
 
+/* Бейдж уровня истощения (иконка + число). */
 .red-powder-actor-exhaustion,
+/* Бейдж количества сигарет (иконка + число). */
 .red-powder-actor-cigarettes {
   display: inline-flex;
   align-items: center;
@@ -81,6 +152,7 @@
   white-space: nowrap;
 }
 
+/* Контейнер кнопок −1 / +1 / удалить в строке персонажа. */
 .red-powder-actor-controls {
   display: flex;
   gap: 0.25rem;
@@ -93,52 +165,46 @@
   line-height: 1;
 }
 
+/* Пустое состояние списка (когда персонажей нет). */
 .red-powder-empty {
   padding: 0.5rem;
   color: var(--color-text-dark-5, #777);
   text-align: center;
 }
 
-/* --- Таймер --- */
+/* ============================================================
+ * КНОПКА «ВЫКУРИТЬ» (templates/cigarette-button.hbs)
+ * Вставляется в .currency на вкладке «Инвентарь» листа персонажа.
+ * ============================================================ */
 
-.red-powder-timer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border-light-2, #888);
+/* Кнопка «Выкурить» в строке валюты.
+ * width: auto + white-space: nowrap + flex-shrink: 0 —
+ * кнопка всегда подстраивается под содержимое (иконка + текст),
+ * не сжимается flex-контейнером и не переносит текст.
+ * margin-right: 60px — отступ от правого края строки валюты. */
+.currency .red-powder-smoke-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: auto;
+  min-width: 0;
+  padding: 0.25rem 0.6rem;
+  margin-left: auto;
+  margin-right: 60px;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  background: var(--color-border-light-2, #3a3a3a);
+  color: var(--color-text-light-1, #f0f0f0);
+  border: 1px solid var(--color-border-dark-2, #222);
   border-radius: 4px;
 }
 
-.red-powder-timer-display {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-.red-powder-timer-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.red-powder-timer-controls input[type="number"] {
-  width: 4rem;
-}
-
-.red-powder-timer-repeat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.red-powder-timer-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.red-powder-timer-apply {
-  flex: 1;
+/* Неактивное состояние: нет сигарет или истощение = 0. */
+.currency .red-powder-smoke-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

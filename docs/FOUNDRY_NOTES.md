@@ -213,7 +213,17 @@ L528-543) **уже сортирует** навыки по локализован
   3. В блоке навыков (details) — рядом с заголовком `filigree-box.skills > h3`.
 - Рекомендация: вариант 1. Селектор вставки:
   `app.element.querySelector(".sidebar .stats")` → `insertAdjacentElement("afterend", node)`.
-- Кнопка «Выкурить» — рядом с индикатором в том же блоке.
+- **Реализовано (этап 6):** индикатор — только иконка + число (без кнопки, чтобы не
+  перекрывать лист). Действие «Выкурить» доступно двумя способами:
+  1. ПКМ по индикатору — `foundry.applications.ux.ContextMenu`
+     (`client/applications/ux/context-menu.mjs` L60-98): конструктор
+     `(container, selector, menuItems, { jQuery: false })`, пункт
+     `{ name, icon, condition, callback }`; `condition`/`callback` получают
+     `HTMLElement` цели.
+  2. Кнопка в строке валюты (вкладка «Инвентарь»):
+     `templates/inventory/inventory.hbs` L5-22 — `section.currency`
+     (`showCurrency = true` всегда, `base-actor-sheet.mjs` L316). Селектор:
+     `.tab[data-tab='inventory'] .currency` → `append(button)`.
 
 ### 2.7 Истощение на листе (для справки)
 

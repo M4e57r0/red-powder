@@ -4,7 +4,8 @@
  */
 
 import { applyExhaustion, EXHAUSTION_REASONS } from "../exhaustion.mjs";
-import { FLAGS, MODULE_ID, PANEL_ID, SETTINGS, TEMPLATES } from "../constants.mjs";
+import { countCigarettes } from "../cigarettes.mjs";
+import { MODULE_ID, PANEL_ID, SETTINGS, TEMPLATES } from "../constants.mjs";
 import { applyExhaustionToAll, formatTime, getTimerRemaining, getTimerState, pauseTimer, resetTimer, startTimer, updateTimerConfig } from "../timer.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -68,21 +69,6 @@ async function changePanelActorExhaustion(uuid, delta) {
   if ( !actor ) return;
   await applyExhaustion(actor, delta, { reason: EXHAUSTION_REASONS.MANUAL });
   renderPanel();
-}
-
-/**
- * Считает количество сигарет «Красный порох» у актёра.
- * TODO (этап 6): перенести в cigarettes.mjs.
- * @param {Actor} actor  Актёр.
- * @returns {number}
- */
-function countCigarettes(actor) {
-  const name = (game.settings.get(MODULE_ID, SETTINGS.CIGARETTE_NAME) ?? "").trim().toLowerCase();
-  return actor.items.reduce((total, item) => {
-    const isCigarette = (item.getFlag(MODULE_ID, FLAGS.CIGARETTE) === true)
-      || (!!name && item.name.trim().toLowerCase() === name);
-    return isCigarette ? total + (item.system.quantity ?? 0) : total;
-  }, 0);
 }
 
 /**

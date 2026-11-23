@@ -25,6 +25,14 @@
         "Cigarette": "cigarette"
       }
     },
+    "Cigarette": {
+      "Label": "Red Powder",
+      "Indicator": "Number of \"Red Powder\" cigarettes. Right-click to smoke",
+      "Smoke": "Smoke",
+      "SmokeHint": "Smoke a cigarette: −1 cigarette, −1 exhaustion",
+      "Smoked": "{name} smokes a \"Red Powder\" cigarette",
+      "Error": "Failed to smoke a cigarette."
+    },
     "Timer": {
       "Interval": "Interval",
       "UnitMinutes": "minutes",

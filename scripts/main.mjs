@@ -6,12 +6,14 @@
 import { registerExhaustionPanelHooks, toggleExhaustionPanel } from "./apps/exhaustion-panel.mjs";
 import { MODULE_ID } from "./constants.mjs";
 import { registerSettings } from "./settings.mjs";
+import { registerSheetIntegration } from "./sheet-integration.mjs";
 import { registerTimerHooks } from "./timer.mjs";
 
 Hooks.once("init", () => {
   registerSettings();
   registerExhaustionPanelHooks();
   registerTimerHooks();
+  registerSheetIntegration();
   console.log(`[${MODULE_ID}] Модуль «Красный порох» инициализирован`);
 });
 

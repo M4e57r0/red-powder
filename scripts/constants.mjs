@@ -65,5 +65,5 @@ export const TIMER_MODES = {
 /** Пути к шаблонам модуля. */
 export const TEMPLATES = {
   EXHAUSTION_PANEL: `modules/${MODULE_ID}/templates/exhaustion-panel.hbs`,
-  CIGARETTE_FIELD: `modules/${MODULE_ID}/templates/cigarette-field.hbs`
+  CIGARETTE_BUTTON: `modules/${MODULE_ID}/templates/cigarette-button.hbs`
 };
