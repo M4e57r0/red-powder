@@ -1,5 +1,6 @@
 /**
- * Интеграция с листом персонажа: кнопка «Выкурить» в строке валюты вкладки «Инвентарь».
+ * Интеграция с листом персонажа: счётчик сигарет в сайдбаре и кнопка «Выкурить»
+ * в строке валюты вкладки «Инвентарь».
  * «Всего сигарет» считается по формуле ТЗ 3.1 (пачки × заряды), а не по quantity.
  * @module red-powder/sheet-integration
  */
@@ -12,8 +13,14 @@ const { renderTemplate } = foundry.applications.handlebars;
 /** Селектор строки валюты на вкладке «Инвентарь» (templates/inventory/inventory.hbs). */
 const CURRENCY_SELECTOR = ".tab[data-tab='inventory'] .currency";
 
+/** Селектор блока статистики в сайдбаре (templates/actors/character-sidebar.hbs). */
+const SIDEBAR_STATS_SELECTOR = ".sidebar .stats";
+
 /** Атрибут-маркер, чтобы не вставлять кнопку дважды. */
 const BUTTON_ATTR = "data-red-powder-smoke-button";
+
+/** Атрибут-маркер, чтобы не вставлять счётчик дважды. */
+const INDICATOR_ATTR = "data-red-powder-cigarette-indicator";
 
 /* -------------------------------------------- */
 
@@ -26,6 +33,48 @@ function canSmoke(actor) {
   if ( !actor.isOwner ) return false;
   if ( countCigarettes(actor) < 1 ) return false;
   return (actor.system.attributes?.exhaustion ?? 0) > 0;
+}
+
+/* -------------------------------------------- */
+/*  Счётчик сигарет в сайдбаре                  */
+/* -------------------------------------------- */
+
+/**
+ * Вставляет счётчик сигарет после блока статистики в сайдбаре.
+ * Виден владельцу и GM. Показывает «всего сигарет» (ТЗ 3.1).
+ * @param {Actor} actor  Актёр.
+ * @param {HTMLElement} element  Корневой элемент листа.
+ * @returns {void}
+ */
+function injectIndicator(actor, element) {
+  if ( element.querySelector(`[${INDICATOR_ATTR}]`) ) return;
+  if ( !actor.isOwner && !game.user.isGM ) return;
+  const anchor = element.querySelector(SIDEBAR_STATS_SELECTOR);
+  if ( !anchor ) return;
+  const indicator = document.createElement("div");
+  indicator.className = "red-powder-cigarette-indicator";
+  indicator.setAttribute(INDICATOR_ATTR, "");
+  indicator.dataset.tooltip = "REDPOWDER.Cigarette.Indicator";
+  indicator.setAttribute("aria-label", game.i18n.localize("REDPOWDER.Cigarette.Indicator"));
+  const icon = document.createElement("i");
+  icon.className = "fa-solid fa-smoking";
+  icon.setAttribute("inert", "");
+  const value = document.createElement("span");
+  value.className = "red-powder-cigarette-count";
+  indicator.append(icon, value);
+  anchor.insertAdjacentElement("afterend", indicator);
+  refreshIndicator(actor, element);
+}
+
+/**
+ * Обновляет число сигарет в счётчике.
+ * @param {Actor} actor  Актёр.
+ * @param {HTMLElement} element  Корневой элемент листа.
+ * @returns {void}
+ */
+function refreshIndicator(actor, element) {
+  const value = element.querySelector(`[${INDICATOR_ATTR}] .red-powder-cigarette-count`);
+  if ( value ) value.textContent = String(countCigarettes(actor));
 }
 
 /* -------------------------------------------- */
@@ -88,7 +137,7 @@ async function onSmokeClick(event, actor) {
 }
 
 /**
- * Обновляет кнопку на всех открытых листах указанного актёра.
+ * Обновляет счётчик и кнопку на всех открытых листах указанного актёра.
  * @param {Actor} actor  Актёр.
  * @returns {void}
  */
@@ -96,7 +145,9 @@ function refreshActorSheets(actor) {
   for ( const app of foundry.applications.instances.values() ) {
     if ( app.document !== actor ) continue;
     const element = app.element;
-    if ( element ) refreshButton(actor, element);
+    if ( !element ) continue;
+    refreshIndicator(actor, element);
+    refreshButton(actor, element);
   }
 }
 
@@ -110,6 +161,7 @@ export function registerSheetIntegration() {
   Hooks.on("renderActorSheetV2", async (app, element) => {
     const actor = app.document;
     if ( actor?.type !== "character" ) return;
+    injectIndicator(actor, element);
     await injectButton(actor, element);
   });
 

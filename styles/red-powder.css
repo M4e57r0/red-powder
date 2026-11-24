@@ -244,6 +244,28 @@
 }
 
 /* ============================================================
+ * СЧЁТЧИК СИГАРЕТ (сайдбар листа персонажа, после .stats)
+ * ============================================================ */
+
+.red-powder-cigarette-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0 0.5rem 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--red-powder-border);
+  border-radius: var(--red-powder-radius);
+  background: var(--red-powder-surface);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.red-powder-cigarette-indicator i {
+  color: var(--red-powder-accent);
+}
+
+/* ============================================================
  * КНОПКА «ВЫКУРИТЬ» (в .currency на вкладке «Инвентарь»)
  * ============================================================ */
 

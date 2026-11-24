@@ -16,7 +16,7 @@ import { applyExhaustion, EXHAUSTION_REASONS } from "./exhaustion.mjs";
  * @param {Item} item  Предмет.
  * @returns {boolean}
  */
-export function isCigarette(item) {
+function isCigarette(item) {
   if ( item.getFlag(MODULE_ID, FLAGS.CIGARETTE) === true ) return true;
   const name = (game.settings.get(MODULE_ID, SETTINGS.CIGARETTE_NAME) ?? "").trim().toLowerCase();
   return !!name && item.name.trim().toLowerCase() === name;
@@ -27,7 +27,7 @@ export function isCigarette(item) {
  * @param {Actor} actor  Актёр.
  * @returns {Item[]}
  */
-export function getCigaretteItems(actor) {
+function getCigaretteItems(actor) {
   return actor.items.filter(isCigarette);
 }
 

@@ -29,8 +29,7 @@
       "SkillSort": "Skill order: {mode}"
     },
     "Cigarette": {
-      "Label": "Red Powder",
-      "Indicator": "Number of \"Red Powder\" cigarettes. Right-click to smoke",
+      "Indicator": "Total \"Red Powder\" cigarettes",
       "Smoke": "Smoke",
       "SmokeHint": "Smoke a cigarette: −1 cigarette, −1 exhaustion",
       "Smoked": "{name} smokes a \"Red Powder\" cigarette",

@@ -16,7 +16,7 @@ export const EXHAUSTION_REASONS = {
  * Возвращает эффективный максимум уровня истощения.
  * @returns {number}
  */
-export function getMaxExhaustion() {
+function getMaxExhaustion() {
   const max = game.settings.get(MODULE_ID, SETTINGS.MAX_EXHAUSTION);
   const allowSixth = game.settings.get(MODULE_ID, SETTINGS.ALLOW_SIXTH_LEVEL);
   return allowSixth ? max : Math.min(max, 5);
