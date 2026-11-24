@@ -169,6 +169,7 @@ async function triggerTimer() {
     }
     await setTimerState(state);
     startCountdown();
+    updateTimerDisplay();
   } finally {
     triggering = false;
   }
@@ -214,14 +215,20 @@ function tick() {
 }
 
 /**
- * Обновляет отображение оставшегося времени в открытой панели.
+ * Обновляет отображение оставшегося времени и классов состояния в открытой панели.
  * @returns {void}
  */
 function updateTimerDisplay() {
   const panel = foundry.applications.instances.get(PANEL_ID);
-  if ( !panel ) return;
-  const el = panel.element?.querySelector("[data-timer-display]");
-  if ( el ) el.textContent = formatTime(getTimerRemaining());
+  if ( !panel?.element ) return;
+  const display = panel.element.querySelector("[data-timer-display]");
+  if ( display ) display.textContent = formatTime(getTimerRemaining());
+  const section = panel.element.querySelector(".red-powder-timer");
+  if ( section ) {
+    const state = getTimerState();
+    section.classList.toggle("is-running", state.running === true);
+    section.classList.toggle("is-paused", state.pausedRemaining != null);
+  }
 }
 
 /* -------------------------------------------- */

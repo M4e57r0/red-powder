@@ -71,8 +71,8 @@
         "Hint": "An item with this name (case-insensitive) counts as a \"Red Powder\" cigarette."
       },
       "DeleteEmptyStack": {
-        "Name": "Delete empty stack",
-        "Hint": "Delete the cigarette item when its quantity drops to zero."
+        "Name": "Delete empty pack",
+        "Hint": "Delete the cigarette item when all cigarettes in its packs have been smoked."
       },
       "SkillSortMode": {
         "Name": "Skill sorting",

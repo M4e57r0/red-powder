@@ -25,7 +25,7 @@ export const SETTINGS = {
   CHAT_MODE: "chatMode",
   /** Название предмета-сигареты (world). */
   CIGARETTE_NAME: "cigaretteName",
-  /** Удалять пустой стак сигарет (world). */
+  /** Удалять пустую пачку сигарет (world). */
   DELETE_EMPTY_STACK: "deleteEmptyStack",
   /** Режим сортировки навыков (client). */
   SKILL_SORT_MODE: "skillSortMode"

@@ -13,7 +13,7 @@
   + fromUuid.
 
 ## Исходники для справки (только чтение, не изменять)
-- Ядро Foundry v13.351: корневая папка `client`
+- Ядро Foundry v13.351: корневая папка `foundry-client`
   (например client/applications/api).
 - Система dnd5e 5.2.5: `_reference/dnd5e`
   (module/, templates/, en.json). Если module/ отсутствует, логика системы

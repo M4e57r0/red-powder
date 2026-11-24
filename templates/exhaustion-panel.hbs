@@ -1,7 +1,7 @@
 <div class="red-powder-panel-body">
 
     {{!-- Таймер --}}
-    <section class="red-powder-timer">
+    <section class="red-powder-timer {{#if timerRunning}}is-running{{/if}} {{#if timerIsPaused}}is-paused{{/if}}">
         <div class="red-powder-timer-display" data-timer-display>{{ timerDisplay }}</div>
         <div class="red-powder-timer-controls">
             <input type="number" name="interval" value="{{ timer.interval }}" min="1"
@@ -55,11 +55,11 @@
             {{else}}
             <img class="red-powder-actor-portrait" src="{{ img }}" alt="{{ name }}">
             <span class="red-powder-actor-name">{{ name }}</span>
-            <span class="red-powder-actor-exhaustion" data-tooltip="REDPOWDER.Panel.Exhaustion">
+            <span class="red-powder-actor-exhaustion" data-level="{{ exhaustion }}" data-tooltip="REDPOWDER.Panel.Exhaustion">
                 <i class="fa-solid fa-hourglass-half" inert></i>
                 <span>{{ exhaustion }}</span>
             </span>
-            <span class="red-powder-actor-cigarettes" data-tooltip="REDPOWDER.Panel.Cigarettes">
+            <span class="red-powder-actor-cigarettes{{#if (eq cigarettes 0)}} is-empty{{/if}}" data-tooltip="REDPOWDER.Panel.Cigarettes">
                 <i class="fa-solid fa-smoking" inert></i>
                 <span>{{ cigarettes }}</span>
             </span>

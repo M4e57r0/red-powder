@@ -154,12 +154,16 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
         cigarettes: countCigarettes(actor)
       };
     });
+    const timer = getTimerState();
     return {
       actors,
-      timer: getTimerState(),
+      timer,
       timerDisplay: formatTime(getTimerRemaining()),
-      timerRunning: getTimerState().running === true,
-      timerPaused: getTimerState().running !== true
+      // Кнопки: «Старт» неактивен, когда идёт; «Пауза» — когда не идёт.
+      timerRunning: timer.running === true,
+      timerPaused: timer.running !== true,
+      // Класс .is-paused на секции: только реальная пауза, а не «не запущен».
+      timerIsPaused: timer.pausedRemaining != null
     };
   }
 
@@ -171,7 +175,16 @@ export default class ExhaustionPanel extends HandlebarsApplicationMixin(Applicat
     const zone = this.element.querySelector("[data-drop-zone]");
     if ( zone ) {
       zone.addEventListener("dragover", event => event.preventDefault());
-      zone.addEventListener("drop", event => this.#onDrop(event));
+      zone.addEventListener("dragenter", () => zone.classList.add("drag-over"));
+      zone.addEventListener("dragleave", event => {
+        // dragleave срабатывает и при переходе на дочерний элемент — игнорируем.
+        if ( zone.contains(event.relatedTarget) ) return;
+        zone.classList.remove("drag-over");
+      });
+      zone.addEventListener("drop", event => {
+        zone.classList.remove("drag-over");
+        this.#onDrop(event);
+      });
     }
     for ( const name of ["interval", "unit", "mode", "repeat"] ) {
       this.element.querySelector(`[name="${name}"]`)?.addEventListener("change", event => this.#onTimerConfigChange(event));
@@ -332,9 +345,18 @@ export function toggleExhaustionPanel() {
  */
 export function registerExhaustionPanelHooks() {
   const refresh = foundry.utils.debounce(() => renderPanel(), 100);
-  const onChange = actor => {
+  const onActorChange = actor => {
     if ( getPanelActorUuids().includes(actor.uuid) ) refresh();
   };
-  Hooks.on("updateActor", onChange);
-  Hooks.on("deleteActor", onChange);
+  Hooks.on("updateActor", onActorChange);
+  Hooks.on("deleteActor", onActorChange);
+
+  // Число сигарет выводится из предметов: обновляем панель и при их изменении.
+  const onItemChange = item => {
+    const actor = item.parent;
+    if ( actor?.uuid && getPanelActorUuids().includes(actor.uuid) ) refresh();
+  };
+  Hooks.on("createItem", onItemChange);
+  Hooks.on("updateItem", onItemChange);
+  Hooks.on("deleteItem", onItemChange);
 }
