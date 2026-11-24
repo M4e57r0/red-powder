@@ -25,6 +25,9 @@
         "Cigarette": "cigarette"
       }
     },
+    "Sheet": {
+      "SkillSort": "Skill order: {mode}"
+    },
     "Cigarette": {
       "Label": "Red Powder",
       "Indicator": "Number of \"Red Powder\" cigarettes. Right-click to smoke",
@@ -78,6 +81,7 @@
         "Name": "Skill sorting",
         "Hint": "The order of skills on the character sheet.",
         "Standard": "Standard",
+        "Alphabetical": "Alphabetical",
         "Ability": "By ability"
       }
     }

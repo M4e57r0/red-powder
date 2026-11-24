@@ -108,6 +108,7 @@ export function registerSettings() {
     type: String,
     choices: {
       [SKILL_SORT_MODES.STANDARD]: "REDPOWDER.Settings.SkillSortMode.Standard",
+      [SKILL_SORT_MODES.ALPHABETICAL]: "REDPOWDER.Settings.SkillSortMode.Alphabetical",
       [SKILL_SORT_MODES.ABILITY]: "REDPOWDER.Settings.SkillSortMode.Ability"
     },
     default: SKILL_SORT_MODES.STANDARD

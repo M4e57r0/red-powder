@@ -287,12 +287,45 @@
   cursor: not-allowed;
 }
 
+/* ============================================================
+ * СОРТИРОВКА НАВЫКОВ (лист персонажа)
+ * ============================================================ */
+
+/* Кнопка — последний элемент flex-заголовка блока навыков:
+   margin-left: auto прижимает её вправо, заголовок не перекрывается */
+.red-powder-skill-sort {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+  margin-right: 0.4rem; /* зазор до стрелки сворачивания */
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--red-powder-radius, 6px);
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.red-powder-skill-sort:hover,
+.red-powder-skill-sort:focus-visible {
+  background: var(--red-powder-surface-hover, rgba(0, 0, 0, 0.08));
+  border-color: var(--red-powder-border, rgba(0, 0, 0, 0.2));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .red-powder-timer-display,
   .red-powder-drop-zone,
   .red-powder-actor,
   .red-powder-timer-apply,
-  .currency .red-powder-smoke-button {
+  .currency .red-powder-smoke-button,
+  .red-powder-skill-sort {
     transition: none;
   }
 }

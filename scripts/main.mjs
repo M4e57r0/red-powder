@@ -7,6 +7,7 @@ import { registerExhaustionPanelHooks, toggleExhaustionPanel } from "./apps/exha
 import { MODULE_ID } from "./constants.mjs";
 import { registerSettings } from "./settings.mjs";
 import { registerSheetIntegration } from "./sheet-integration.mjs";
+import { registerSkillSort } from "./skill-sort.mjs";
 import { registerTimerHooks } from "./timer.mjs";
 
 Hooks.once("init", () => {
@@ -14,6 +15,7 @@ Hooks.once("init", () => {
   registerExhaustionPanelHooks();
   registerTimerHooks();
   registerSheetIntegration();
+  registerSkillSort();
   console.log(`[${MODULE_ID}] Модуль «Красный порох» инициализирован`);
 });
 

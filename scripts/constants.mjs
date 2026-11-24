@@ -47,8 +47,16 @@ export const CHAT_MODES = {
 /** Режимы сортировки навыков. */
 export const SKILL_SORT_MODES = {
   STANDARD: "standard",
-  ABILITY: "ability"
+  ALPHABETICAL: "alphabetical",
+  ABILITY: "alphabetical-by-ability"
 };
+
+/** Цикл переключения режимов кнопкой на листе. */
+export const SKILL_SORT_CYCLE = [
+  SKILL_SORT_MODES.STANDARD,
+  SKILL_SORT_MODES.ALPHABETICAL,
+  SKILL_SORT_MODES.ABILITY
+];
 
 /** Единицы интервала таймера. */
 export const TIMER_UNITS = {
